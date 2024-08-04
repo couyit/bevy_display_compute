@@ -640,14 +640,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bevy_gpu_image_creation_utils"
-version = "0.1.0"
-source = "git+https://github.com/couyit/bevy_gpu_image_creation_utils.git#ea48d878b6d9f47481563e06f2c962caee0fd2fe"
-dependencies = [
- "bevy",
-]
-
-[[package]]
 name = "bevy_hierarchy"
 version = "0.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3284,7 +3276,6 @@ version = "0.1.0"
 dependencies = [
  "bevy",
  "bevy_display_compute",
- "bevy_gpu_image_creation_utils",
  "bytemuck",
 ]
 
