@@ -1,12 +1,16 @@
 use bevy::{
     app::Plugin,
-    asset::Handle,
+    asset::{Assets, Handle},
     core_pipeline::core_2d::graph::{Core2d, Node2d},
     prelude::{Commands, Component, Entity, Image, Query, QueryState, ResMut, Resource, World},
     render::{
-        render_asset::RenderAssets,
+        render_asset::{RenderAssetUsages, RenderAssets},
         render_graph::{self, RenderGraph, RenderLabel},
-        render_resource::{ImageCopyTexture, Origin3d, Texture, TextureAspect},
+        render_resource::{
+            Extent3d, ImageCopyTexture, Origin3d, Texture, TextureAspect, TextureDescriptor,
+            TextureDimension, TextureFormat, TextureUsages,
+        },
+        renderer::RenderDevice,
         texture::GpuImage,
         Extract, ExtractSchedule, RenderApp,
     },
@@ -40,6 +44,51 @@ struct TextureCopiers(Vec<Entity>);
 pub struct TextureCopier {
     pub source: Texture,
     pub target: Handle<Image>,
+}
+
+impl TextureCopier {
+    pub fn new_2d_fill(
+        device: &RenderDevice,
+        images: &mut Assets<Image>,
+        width: u32,
+        height: u32,
+        format: TextureFormat,
+        pixel: &[u8],
+    ) -> Self {
+        let size = Extent3d {
+            width,
+            height,
+            depth_or_array_layers: 1,
+        };
+
+        let dimension = TextureDimension::D2;
+
+        let image = Image::new_fill(
+            size,
+            dimension,
+            pixel,
+            format,
+            RenderAssetUsages::RENDER_WORLD,
+        );
+
+        let handle = images.add(image);
+
+        let texture = device.create_texture(&TextureDescriptor {
+            label: None,
+            size,
+            mip_level_count: 1,
+            sample_count: 1,
+            dimension,
+            format,
+            usage: TextureUsages::STORAGE_BINDING | TextureUsages::COPY_SRC,
+            view_formats: &[],
+        });
+
+        Self {
+            source: texture,
+            target: handle,
+        }
+    }
 }
 
 fn extract_gpu_image_copier(
