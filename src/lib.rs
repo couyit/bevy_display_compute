@@ -16,8 +16,6 @@ pub struct DisplayComputeResultPlugin;
 
 impl Plugin for DisplayComputeResultPlugin {
     fn build(&self, app: &mut bevy::prelude::App) {
-        println!("DisplayComputeResultPlugin");
-
         if let Some(render_app) = app.get_sub_app_mut(RenderApp) {
             render_app.add_systems(ExtractSchedule, extract_gpu_image_copier);
             render_app.insert_resource(TextureCopiers::default());
