@@ -1,0 +1,10 @@
+[package]
+name = "sin_wave"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = "0.14.1"
+bevy_display_compute.workspace = true
+bytemuck = "1.16.3"
+bevy_gpu_image_creation_utils = { git = "https://github.com/couyit/bevy_gpu_image_creation_utils.git" }
