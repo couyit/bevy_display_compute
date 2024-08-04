@@ -100,10 +100,6 @@ impl render_graph::Node for CopyTextureFromComputeNode {
                 panic!();
             }
 
-            let mut copy_size = source.size();
-            copy_size.width = 300;
-            copy_size.height = 200;
-
             encoder.copy_texture_to_texture(
                 ImageCopyTexture {
                     texture: &source,
@@ -117,7 +113,7 @@ impl render_graph::Node for CopyTextureFromComputeNode {
                     origin: Origin3d::default(),
                     aspect: TextureAspect::default(),
                 },
-                copy_size,
+                source.size(),
             )
         }
 
